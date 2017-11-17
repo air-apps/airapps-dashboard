@@ -39,8 +39,8 @@ class App extends Component {
 	}
 
 	async componentDidMount() {
-    // const api = 'https://airapps-api.now.sh/apps';
-    const api = 'http://localhost:3000/apps';
+    const api = 'https://airapps-api.now.sh/apps';
+    // const api = 'http://localhost:3000/apps';
 
     const response = await fetch(
 			`${api}`
@@ -56,13 +56,13 @@ class App extends Component {
 
   generateGrid () {
     if (!this.state.json) return [];
-    return this.state.json.data.map(app => {
+    return this.state.json.data.map((app, index) => {
       const counts = counter(app.checkins);
       const graphData = Object.keys(counts).map(i => {
         return {time: new Date(i).getHours(), amount: counts[i]};
       });
       return (
-      <div>
+      <div key={index}>
         <Grid.Row columns={1}>
           <Grid.Column>
             <Header as='h2'>
@@ -76,13 +76,13 @@ class App extends Component {
               Check-ins over Time
             </Header>
             <LineChart width={600} height={300} data={graphData}
-              margin={{top: 5, right: 30, left: 20, bottom: 10}}>
+              margin={{top: 5, right: 30, left: 0, bottom: 10}}>
               <XAxis dataKey="time" label='Time (hours)'/>
-              <YAxis label='Check ins'/>
+              <YAxis />
               <CartesianGrid strokeDasharray="3 3"/>
               <Tooltip/>
               <Legend />
-              <Line type="monotone" dataKey="amount" stroke="#8884d8" activeDot={{r: 5}}/>
+              <Line type="monotone" dataKey="Check-ins" stroke="#8884d8" activeDot={{r: 5}}/>
             </LineChart>
           </Grid.Column>
           <Grid.Column>
